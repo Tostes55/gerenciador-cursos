@@ -65,6 +65,7 @@ public class CourseService {
         Optional<Course> course = courseRepository.findById(id);
         course.ifPresent(c -> {
             c.setActive(true);
+            courseRepository.save(c);
         });
     }
 
