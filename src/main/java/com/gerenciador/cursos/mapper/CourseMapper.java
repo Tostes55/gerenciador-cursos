@@ -22,7 +22,8 @@ public class CourseMapper {
 
         return new CourseDTO(
                 entity.getName(),
-                entity.getCategory());
+                entity.getCategory(),
+                entity.getActive());
 
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CourseService {
@@ -30,6 +31,41 @@ public class CourseService {
 
         return this.courseRepository.save(savedCourse);
 
+    }
+
+    public Course updateCourse(CourseDTO dto, Long id){
+
+        var existCourse = courseRepository.findById(id)
+                .orElseThrow(()-> new IllegalArgumentException ("Course not found with id " + id));
+
+        if (dto.name() != null) {
+            existCourse.setName(dto.name());
+        }
+        if (dto.category() != null) {
+            existCourse.setCategory(dto.category());
+        }
+
+        return courseRepository.save(existCourse);
+
+    }
+
+    public void deleteCourse(Long id){
+        courseRepository.deleteById(id);
+    }
+
+    public void disableCourse(Long id){
+        Optional<Course> course = courseRepository.findById(id);
+        course.ifPresent(c -> {
+            c.setActive(false);
+            courseRepository.save(c);
+        });
+    }
+
+    public void enableCourse(Long id){
+        Optional<Course> course = courseRepository.findById(id);
+        course.ifPresent(c -> {
+            c.setActive(true);
+        });
     }
 
 
